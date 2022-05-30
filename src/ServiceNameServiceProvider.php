@@ -1,10 +1,10 @@
 <?php
 
-namespace NotificationChannels\:channel_namespace;
+namespace NotificationChannels\WhatsApp;
 
 use Illuminate\Support\ServiceProvider;
 
-class :service_nameServiceProvider extends ServiceProvider
+class WhatsAppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -28,7 +28,6 @@ class :service_nameServiceProvider extends ServiceProvider
                 );
             });
          */
-
     }
 
     /**

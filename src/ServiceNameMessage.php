@@ -1,10 +1,10 @@
 <?php
 
-namespace NotificationChannels\:channel_namespace;
+namespace NotificationChannels\WhatsApp;
 
 use Illuminate\Support\Arr;
 
-class :service_nameMessage
+class WhatsAppMessage
 {
     // Message structure here
 }

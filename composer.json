@@ -1,13 +1,13 @@
 {
-    "name": "laravel-notification-channels/:package_name",
-    "description": ":package_description",
-    "homepage": "https://github.com/laravel-notification-channels/:package_name",
+    "name": "laravel-notification-channels/whatsapp",
+    "description": "WhatsApp cloud API notification driver for Laravel",
+    "homepage": "https://github.com/laravel-notification-channels/whatsapp",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website",
+            "name": "Sidharth Raveendran",
+            "email": "sidharth.s.r@gmail.com",
+            "homepage": "https://sidharth.work",
             "role": "Developer"
         }
     ],
@@ -22,12 +22,12 @@
     },
     "autoload": {
         "psr-4": {
-            "NotificationChannels\\:channel_namespace\\": "src"
+            "NotificationChannels\\WhatsApp\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "NotificationChannels\\:channel_namespace\\Test\\": "tests"
+            "NotificationChannels\\WhatsApp\\Test\\": "tests"
         }
     },
     "scripts": {
