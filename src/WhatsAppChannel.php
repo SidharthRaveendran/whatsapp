@@ -7,11 +7,6 @@ use Illuminate\Notifications\Notification;
 
 class WhatsAppChannel
 {
-    public function __construct()
-    {
-        // Initialisation code here
-    }
-
     /**
      * Send the given notification.
      *
