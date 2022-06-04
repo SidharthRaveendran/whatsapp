@@ -1,6 +1,6 @@
 <?php
 
-namespace App\NotificationChannels\Whatsapp\Resources;
+namespace NotificationChannels\WhatsApp\Resources;
 
 class Template implements Resource
 {
@@ -12,7 +12,7 @@ class Template implements Resource
     /**
      * @var array|null
      */
-    protected $language;
+    protected $language = ['code' => "en_US"];
 
     /**
      * @return string|null
@@ -23,12 +23,12 @@ class Template implements Resource
     }
 
     /**
-     * @param string|null $title
+     * @param string|null $name
      * @return Template
      */
-    public function setName(?string $title): self
+    public function setName(?string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }

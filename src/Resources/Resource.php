@@ -1,6 +1,6 @@
 <?php
 
-namespace App\NotificationChannels\WhatsApp\Resources;
+namespace NotificationChannels\WhatsApp\Resources;
 
 interface Resource
 {

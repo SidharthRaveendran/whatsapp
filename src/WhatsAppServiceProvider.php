@@ -12,15 +12,13 @@ class WhatsAppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->when(WhatsAppChannel::class)
-            ->needs(Facebook::class)
-            ->give(function () {
-                $facebookConfig = config('services.facebook');
+            ->needs(WhatsApp::class)
+            ->give(static function () {
+                $whatsApp = new WhatsApp(config('services.whatsapp.access-token'));
 
-                return new Facebook(
-                    $facebookConfig['key'],
-                    $facebookConfig['secret'],
-                    $facebookConfig['app_id']
-                );
+                return $whatsApp
+                    ->setGraphApiVersion(config('services.whatsapp.api-version', '14.0'))
+                    ->setSenderNumber(config('services.whatsapp.phone-number'));
             });
     }
 

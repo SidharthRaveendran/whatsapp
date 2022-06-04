@@ -10,9 +10,9 @@ use NotificationChannels\WhatsApp\Exceptions\CouldNotSendNotification;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Class Facebook.
+ * Class WhatsApp.
  */
-class Facebook
+class WhatsApp
 {
     /** @var HttpClient HTTP Client */
     protected $http;
@@ -20,11 +20,11 @@ class Facebook
     /** @var null|string Page Token. */
     protected $token;
 
-    /** @var null|string App Secret */
-    protected $secret;
+    /** @var null|string Sender Phone */
+    protected $phone;
 
     /** @var string Default Graph API Version */
-    protected $graphApiVersion = '4.0';
+    protected $graphApiVersion = '13.0';
 
     public function __construct(string $token = null, HttpClient $httpClient = null)
     {
@@ -38,7 +38,7 @@ class Facebook
      *
      * @param $graphApiVersion
      *
-     * @return Facebook
+     * @return WhatsApp
      */
     public function setGraphApiVersion($graphApiVersion): self
     {
@@ -48,15 +48,15 @@ class Facebook
     }
 
     /**
-     * Set App Secret to generate appsecret_proof.
+     * Set phone number of sender account.
      *
-     * @param string $secret
+     * @param string $phone
      *
-     * @return Facebook
+     * @return WhatsApp
      */
-    public function setSecret($secret = null): self
+    public function setSenderNumber($phone = null): self
     {
-        $this->secret = $secret;
+        $this->phone = $phone;
 
         return $this;
     }
@@ -69,7 +69,7 @@ class Facebook
      */
     public function send(array $params): ResponseInterface
     {
-        return $this->post('me/messages', $params);
+        return $this->post("{$this->phone}/messages", $params);
     }
 
     /**
@@ -87,7 +87,13 @@ class Facebook
      */
     public function post(string $endpoint, array $params = []): ResponseInterface
     {
-        return $this->api($endpoint, ['json' => $params], 'POST');
+        return $this->api($endpoint, [
+            'json' => $params,
+            'headers' => [
+                'Authorization' => "Bearer {$this->token}",
+                "Content-Type" => 'application/json'
+            ]
+        ], 'POST');
     }
 
     /**
@@ -111,16 +117,10 @@ class Facebook
     protected function api(string $endpoint, array $options, $method = 'GET')
     {
         if (empty($this->token)) {
-            throw CouldNotSendNotification::facebookPageTokenNotProvided('You must provide your Facebook Page token to make any API requests.');
+            throw CouldNotSendNotification::facebookPageTokenNotProvided('You must provide your WhatsApp Business Account\'s System User access token to make any API requests.');
         }
 
-        $url = "https://graph.facebook.com/v{$this->graphApiVersion}/{$endpoint}?access_token={$this->token}";
-
-        if ($this->secret) {
-            $appsecret_proof = hash_hmac('sha256', $this->token, $this->secret);
-
-            $url .= "&appsecret_proof={$appsecret_proof}";
-        }
+        $url = "https://graph.facebook.com/v{$this->graphApiVersion}/{$endpoint}";
 
         try {
             return $this->httpClient()->request($method, $url, $options);

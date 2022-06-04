@@ -18,9 +18,19 @@ class WhatsAppMessage
     protected $type = 'template';
 
     /**
-     * @var Notification|null
+     * @var string|null
+     */
+    protected $recipient_type = 'individual';
+
+    /**
+     * @var Template|null
      */
     protected $template;
+
+    /**
+     * @var Text|null
+     */
+    protected $text;
 
     /**
      * @var string|null
@@ -30,7 +40,7 @@ class WhatsAppMessage
     /**
      * @var array|null
      */
-    protected $data;
+    // protected $data;
 
     public static function create(): self
     {
@@ -42,26 +52,7 @@ class WhatsAppMessage
      */
     public function getMessagingProduct(): ?string
     {
-        return $this->messaging_product;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string|null $name
-     * @return FcmMessage
-     */
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
+        return $this->messagingProduct;
     }
 
     /**
@@ -98,6 +89,33 @@ class WhatsAppMessage
     public function setTemplate(?Template $template): self
     {
         $this->template = $template;
+
+        return $this;
+    }
+
+    /**
+     * @return Text|null
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param string|null $text
+     * @return FcmMessage
+     */
+    public function setText(string $text, bool $preview = false): self
+    {
+        // TODO:
+        // Check if text has https:// or http://
+        // and preview url can be automatically true, 
+        // Should also provide an override
+
+        $this->text = [
+            "preview_url" => $preview,
+            "body" => $text
+        ];
 
         return $this;
     }
@@ -142,12 +160,24 @@ class WhatsAppMessage
 
     public function toArray()
     {
-        return [
-            'messaging_product' => $this->getName(),
+        $array = [
+            'recipient_type' => $this->recipient_type,
+            'messaging_product' => $this->getMessagingProduct(),
             'to' => $this->getTo(),
             'type' => $this->getType(),
-            'template' => !is_null($this->getTemplate()) ? $this->getTemplate()->toArray() : null,
         ];
+
+        switch ($this->getType()) {
+            case "template": 
+                $array['template'] = !is_null($this->getTemplate()) ? $this->getTemplate()->toArray() : null;
+                break;
+            case "text": 
+                $array['text'] = !is_null($this->getText()) ? $this->getText() : null;
+                break;
+            default: break;
+        }
+
+        return $array;
     }
 
     public function jsonSerialize()
