@@ -5,7 +5,6 @@ namespace NotificationChannels\WhatsApp;
 use NotificationChannels\WhatsApp\Exceptions\CouldNotSendNotification;
 use NotificationChannels\WhatsApp\WhatsAppMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Events\Dispatcher;
 
 class WhatsAppChannel
 {
@@ -44,7 +43,7 @@ class WhatsAppChannel
         }
         
         // TODO: Need to validate and sanitise the phone numbers provided
-        $whatsAppMessage->setTo("918072254450");
+        $whatsAppMessage->setTo("918667892739");
 
         $response = null;
 
