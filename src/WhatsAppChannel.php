@@ -43,7 +43,7 @@ class WhatsAppChannel
         }
         
         // TODO: Need to validate and sanitise the phone numbers provided
-        $whatsAppMessage->setTo("918667892739");
+        $whatsAppMessage->setTo($phone);
 
         $response = null;
 
