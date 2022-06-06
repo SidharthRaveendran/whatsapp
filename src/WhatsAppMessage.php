@@ -4,6 +4,9 @@ namespace NotificationChannels\WhatsApp;
 
 use Illuminate\Support\Arr;
 use NotificationChannels\WhatsApp\Resources\Template;
+use NotificationChannels\WhatsApp\Resources\Text;
+use NotificationChannels\WhatsApp\Resources\Image;
+
 
 class WhatsAppMessage
 {
@@ -28,9 +31,14 @@ class WhatsAppMessage
     protected $template;
 
     /**
-     * @var Text|null
+     * @var Text|array
      */
-    protected $text;
+    protected $text =[];
+
+     /**
+     * @var Image|array
+     */
+    protected $image =[];
 
     /**
      * @var string|null
@@ -94,30 +102,41 @@ class WhatsAppMessage
     }
 
     /**
-     * @return Text|null
+     * @param Text $text
+     * @return Text
      */
-    public function getText()
+    public function setText(?Text $text)
     {
-        return $this->text;
+        $this->text = $text;
+        
+        return $this;
     }
 
     /**
-     * @param string|null $text
-     * @return FcmMessage
+     * @return Text|null
      */
-    public function setText(string $text, bool $preview = false): self
+    public function getText(): ?Text
     {
-        // TODO:
-        // Check if text has https:// or http://
-        // and preview url can be automatically true, 
-        // Should also provide an override
+        return  $this->text;
+    }
 
-        $this->text = [
-            "preview_url" => $preview,
-            "body" => $text
-        ];
+    /**
+     * @param Image $text
+     * @return Image
+     */
+    public function setImage(?Image $image)
+    {
+        $this->image = $image;
 
         return $this;
+    }
+
+    /**
+     * @return text|null
+     */
+    public function getImage(): ?Image
+    {
+        return  $this->image;
     }
 
     /**
@@ -165,6 +184,7 @@ class WhatsAppMessage
             'messaging_product' => $this->getMessagingProduct(),
             'to' => $this->getTo(),
             'type' => $this->getType(),
+            'link' => 'https://google.com',
         ];
 
         switch ($this->getType()) {
@@ -172,7 +192,10 @@ class WhatsAppMessage
                 $array['template'] = !is_null($this->getTemplate()) ? $this->getTemplate()->toArray() : null;
                 break;
             case "text": 
-                $array['text'] = !is_null($this->getText()) ? $this->getText() : null;
+                $array['text'] = !is_null($this->getText()) ? $this->getText()->toArray() : null;
+                break;
+            case "image": 
+                $array['image'] = !is_null($this->getImage()) ? $this->getImage()->toArray() : null;
                 break;
             default: break;
         }
