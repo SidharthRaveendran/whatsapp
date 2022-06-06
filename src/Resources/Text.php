@@ -24,7 +24,7 @@ class Text implements Resource
     
     /**
      * @param string|null $previewUrl
-     * @return Text
+     * @return bool
      */
     public function getPreviewUrl()
     {
@@ -32,7 +32,7 @@ class Text implements Resource
     }
 
     /**
-     * @return bool
+     * @return Text
      */
     public function setPreviewUrl(?bool $previewUrl): self
     {
@@ -51,7 +51,7 @@ class Text implements Resource
 
     /**
      * @param string|null $body
-     * @return body
+     * @return Text
      */
     public function setBody(?string $body): self
     {
